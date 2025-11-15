@@ -1,8 +1,122 @@
 <!DOCTYPE html>
-<html>
-<head><title>My Site</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yash Barot | Portfolio</title>
+  <meta name="description" content="Full-stack developer, student in Ireland. Building with React, Node.js, and GitHub." />
+  <link rel="canonical" href="https://baroot.dev" />
+  <link rel="icon" href="https://github.com/yashbarot0.png" />
+  <script src="https://cdn.jsdelivr.net/npm/@github-cards/core@0.0.7/dist/index.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --text: #c9d1d9;
+      --accent: #58a6ff;
+      --card-bg: #161b22;
+      --border: #30363d;
+      --gray: #8b949e;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    .container { max-width: 1000px; margin: auto; }
+    header { text-align: center; padding: 3rem 0 2rem; }
+    .avatar {
+      width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--accent); margin-bottom: 1rem;
+    }
+    h1 { font-size: 2.8rem; margin: 0.5rem 0; background: linear-gradient(90deg, #58a6ff, #f0f6fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .tagline { font-size: 1.3rem; color: var(--gray); margin: 0.5rem 0; }
+    .links { margin: 1.5rem 0; }
+    .links a { color: var(--accent); text-decoration: none; margin: 0 1rem; font-weight: 500; }
+    .links a:hover { text-decoration: underline; }
+    .section { margin: 3rem 0; }
+    h2 { font-size: 1.8rem; margin-bottom: 1.5rem; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.3); }
+    .project-title { font-size: 1.3rem; margin: 0 0 0.5rem; color: #fff; }
+    .project-desc { font-size: 0.95rem; color: var(--gray); margin: 0.5rem 0; }
+    .project-meta { font-size: 0.85rem; color: var(--gray); margin-top: 0.8rem; }
+    .project-meta span { margin-right: 1rem; }
+    .lang { background: var(--accent); color: #000; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+    footer { text-align: center; padding: 3rem 0 2rem; color: var(--gray); font-size: 0.9rem; }
+    .badge { display: inline-block; background: #238636; color: #fff; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; margin-left: 0.5rem; }
+    @media (max-width: 600px) {
+      h1 { font-size: 2.2rem; }
+      .tagline { font-size: 1.1rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
 <body>
-  <h1>Hello from baroot.dev! 🚀</h1>
-  <h1>Hello from baroot.dev! 🚀</h1>
+  <div class="container">
+    <header>
+      <img src="https://github.com/yashbarot0.png" alt="Yash Barot" class="avatar" />
+      <h1>Yash Barot</h1>
+      <p class="tagline">Full-Stack Developer • Student • Ireland</p>
+      <div class="links">
+        <a href="https://github.com/yashbarot0" target="_blank">GitHub</a>
+        <a href="https://baroot.me" target="_blank">Blog</a>
+        <a href="mailto:hi@baroot.dev">Email</a>
+        <a href="https://linkedin.com/in/yashbarot" target="_blank">LinkedIn</a>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2>Featured Projects</h2>
+      <div class="projects-grid" id="projects">
+        <!-- Auto-filled by JavaScript -->
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 Yash Barot • <a href="https://github.com/yashbarot0/yashbarot0.github.io" target="_blank">View Source</a></p>
+    </footer>
+  </div>
+
+  <script>
+    const username = 'yashbarot0';
+    const exclude = ['yashbarot0.github.io', 'baroot.me']; // hide this repo & blog
+
+    fetch(`https://api.github.com/users/${username}/repos?per_page=100`)
+      .then(r => r.json())
+      .then(repos => {
+        const container = document.getElementById('projects');
+        repos
+          .filter(r => !r.fork && !exclude.includes(r.name))
+          .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+          .slice(0, 6)
+          .forEach(repo => {
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            card.innerHTML = `
+              <h3 class="project-title">
+                <a href="${repo.html_url}" target="_blank">${repo.name}</a>
+                ${repo.fork ? '<span class="badge">Forked</span>' : ''}
+              </h3>
+              <p class="project-desc">${repo.description || 'No description'}</p>
+              <div class="project-meta">
+                <span>⭐ ${repo.stargazers_count}</span>
+                <span>🍴 ${repo.forks_count}</span>
+                <span class="lang">${repo.language || 'Code'}</span>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+      })
+      .catch(() => {
+        document.getElementById('projects').innerHTML = '<p>Failed to load projects. <a href="https://github.com/yashbarot0">View on GitHub →</a></p>';
+      });
+  </script>
 </body>
 </html>
